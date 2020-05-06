@@ -109,9 +109,7 @@ class NotITG:
         self.hwnd = hwnd
     
     def GetExternal(self,index = 0) -> int:
-        max_index = 63
-        if self.version == "V1" or self.version == "V2":
-            max_index = 9
+        max_index = 9 if (self.version == "V1" or self.version == "V2") else 63
         if index < 0 or index > max_index:
             raise NotITGError("Index is outside range! [0-{}]".format(max_index))
         # This was a pain to find out.
@@ -120,9 +118,7 @@ class NotITG:
         ReadProcessMemory(self.k32process, self.details['Address'] + (index*4), ct.byref(data), ct.sizeof(data), ct.byref(bytesRead))
         return data.value
     def SetExternal(self, index, flag):
-        max_index = 63
-        if self.version == "V1" or self.version == "V2":
-            max_index = 9
+        max_index = 9 if (self.version == "V1" or self.version == "V2") else 63
         if index < 0 or index > max_index:
             raise NotITGError("Index is outside range! [0-{}]".format(max_index))
         data = ct.c_int( flag )
